@@ -1,7 +1,11 @@
+from django.db import models
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
+from .filters import ArticleFilter
 from .models import Article
 from .serializers import ArticleSerializer
 
@@ -9,8 +13,19 @@ from .serializers import ArticleSerializer
 @permission_classes([IsAuthenticatedOrReadOnly])
 def article_list(request):
     if request.method == 'GET':
-        articles = Article.objects.filter(is_published=True)
-        serializer = ArticleSerializer(articles, many=True)
+        # Apply filters
+        article_filter = ArticleFilter(request.GET, queryset=Article.objects.all())
+        filtered_queryset = article_filter.qs
+
+        # Apply search
+        search_query = request.query_params.get('search', None)
+        if search_query:
+            filtered_queryset = filtered_queryset.filter(
+                models.Q(title__icontains=search_query) | models.Q(content__icontains=search_query)
+            )
+
+        # Serialize and return the filtered queryset
+        serializer = ArticleSerializer(filtered_queryset, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
