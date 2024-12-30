@@ -31,13 +31,32 @@ GET http://127.0.0.1:8000/api/articles
 ### Request 2
 POST http://127.0.0.1:8000/api/articles/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NTkwOTYyLCJpYXQiOjE3MzU1OTA2NjIsImp0aSI6ImZiYTg1NWZkNWIxNzQyOTVhOWM4YmIwZGE2MjVjM2RjIiwidXNlcl9pZCI6MjF9.ASV2xVbck27qtzY8gHSylFO5Bn7cgQvxNNnnNEhQBnw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NTk2MTE0LCJpYXQiOjE3MzU1OTU4MTQsImp0aSI6IjJkMzljYjFlMGJjZjRkMGFiY2Y2ODI0ZGYzMTRhMDAwIiwidXNlcl9pZCI6MjF9.FBh9XwcLzBhKD4isN6Uph9gCyAycuj28aQUH5CiZSTc
 
 {
-    "title": "Test Article",
+    "title": "Test Article 2",
     "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer",
     "tags": "test,article"
 }
+
+### Request 6
+PUT http://127.0.0.1:8000/api/articles/test-article-2/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NTk2MTE0LCJpYXQiOjE3MzU1OTU4MTQsImp0aSI6IjJkMzljYjFlMGJjZjRkMGFiY2Y2ODI0ZGYzMTRhMDAwIiwidXNlcl9pZCI6MjF9.FBh9XwcLzBhKD4isN6Uph9gCyAycuj28aQUH5CiZSTc
+
+{
+    "title": "Test Article 55",
+    "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer",
+    "tags": "test,article"
+}
+
+
+### Request 8
+DELETE http://127.0.0.1:8000/api/articles/test-article-55/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NTk2MTE0LCJpYXQiOjE3MzU1OTU4MTQsImp0aSI6IjJkMzljYjFlMGJjZjRkMGFiY2Y2ODI0ZGYzMTRhMDAwIiwidXNlcl9pZCI6MjF9.FBh9XwcLzBhKD4isN6Uph9gCyAycuj28aQUH5CiZSTc
 
 ### Request 5
 GET http://127.0.0.1:8000/api/articles/?is_published=true&search=Reason&tags=message
