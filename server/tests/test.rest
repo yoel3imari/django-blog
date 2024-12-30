@@ -1,16 +1,3 @@
-### Request 1 
-GET http://127.0.0.1:8000/api/articles
-
-### Request 2
-POST http://127.0.0.1:8000/api/articles/
-Content-Type: application/json
-
-{
-    "title": "Test Article",
-    "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    tags: ["test", "article"]
-}
-
 ### Request 3
 POST http://127.0.0.1:8000/api/auth/register/
 Content-Type: application/json
@@ -28,6 +15,30 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "username": "root2",
+    "username": "root3",
     "password": "123456789"
 }
+
+### Request 4
+GET http://127.0.0.1:8000/api/auth/validate_token/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer bab4fb664f9b483966828c5d7fde67dd2beb9060
+
+### Request 1 
+GET http://127.0.0.1:8000/api/articles
+
+### Request 2
+POST http://127.0.0.1:8000/api/articles/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NTkwOTYyLCJpYXQiOjE3MzU1OTA2NjIsImp0aSI6ImZiYTg1NWZkNWIxNzQyOTVhOWM4YmIwZGE2MjVjM2RjIiwidXNlcl9pZCI6MjF9.ASV2xVbck27qtzY8gHSylFO5Bn7cgQvxNNnnNEhQBnw
+
+{
+    "title": "Test Article",
+    "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer",
+    "tags": "test,article"
+}
+
+### Request 5
+GET http://127.0.0.1:8000/api/articles?is_published=false/
+

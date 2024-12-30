@@ -1,12 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ArticleViewSet
+
+from articles.views import article_detail, article_list
+
 
 app_name = 'articles'
 
-router = DefaultRouter()
-router.register(r'articles', ArticleViewSet)
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('articles/', article_list, name='article-list'),
+    path('articles/<slug:slug>/', article_detail, name='article-detail'),
 ]

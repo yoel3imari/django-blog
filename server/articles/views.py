@@ -1,37 +1,66 @@
-from rest_framework import viewsets, filters
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Article
 from .serializers import ArticleSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    
-    lookup_field = 'slug'
-    filterset_fields = ['is_published', 'tags']
-    search_fields = ['title', 'content']
-    ordering_fields = ['published_at', 'created_at']
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def article_list(request):
+    if request.method == 'GET':
+        articles = Article.objects.filter(is_published=True)
+        serializer = ArticleSerializer(articles, many=True)
+        return Response(serializer.data)
 
-    def get_object(self):
-        queryself = self.get_queryset()
-        slug = self.kwargs.get('slug')
-        return queryself.get(slug=slug)
+    elif request.method == 'POST':
+        try:
+            print("request.data:", request.data)
+            serializer = ArticleSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(author=request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"error": serializer.errors, "request": request.data}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_queryset(self):
-        queryset = Article.objects.all()
-        start_date = self.request.query_params.get('start_date', None)
-        end_date = self.request.query_params.get('end_date', None)
-        
-        if start_date:
-            queryset = queryset.filter(published_at__gte=start_date)
-        if end_date:
-            queryset = queryset.filter(published_at__lte=end_date)
-            
-        tag = self.request.query_params.get('tag', None)
-        if tag:
-            queryset = queryset.filter(tags__icontains=tag)
-            
-        return queryset
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def article_detail(request, slug):
+    try:
+        article = Article.objects.get(slug=slug)
+        if article.is_published is False:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+            )
+    except Article.DoesNotExist:
+        return Response(
+            {"error": "This Article Does not exists!"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    if request.method == 'GET':
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        if article.author != request.user:
+            return Response(
+                {"error": "You are not allowed to update this article"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        serializer = ArticleSerializer(article, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        if article.author != request.user:
+            return Response(
+                {"error": "You are not allowed to delete this article"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
