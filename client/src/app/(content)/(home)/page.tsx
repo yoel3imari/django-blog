@@ -1,9 +1,9 @@
 import { get } from "@/lib/api";
+import Link from "next/link";
 
 export default async function Home() {
-
   const articles = await get<any[]>("articles");
-  console.log(articles);
+  // console.log(articles);
 
   return (
     <div>
@@ -11,7 +11,9 @@ export default async function Home() {
       <ul>
         {articles.map((article) => (
           <li key={article.id}>
-            <h2>{article.title}</h2>
+            <Link href={`/post/${article.slug}`}>
+              <h2>{article.title}</h2>
+            </Link>
           </li>
         ))}
       </ul>
