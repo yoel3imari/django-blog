@@ -1,22 +1,17 @@
+import LatestPosts from "@/components/LatestPosts";
+import PostCard from "@/components/PostCard";
 import { get } from "@/lib/api";
 import Link from "next/link";
 
 export default async function Home() {
-  const articles = await get<any[]>("articles");
-  // console.log(articles);
+  const posts = await get<any[]>("latest-articles");
+  console.log(posts);
 
   return (
     <div>
-      <h1>Home</h1>
-      <ul>
-        {articles.map((article) => (
-          <li key={article.id}>
-            <Link href={`/post/${article.slug}`}>
-              <h2>{article.title}</h2>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {/* 4 latest posts */}
+      <LatestPosts posts={posts} />
+      {/* Popular Categories */}
     </div>
   );
 }

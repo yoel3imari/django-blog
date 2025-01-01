@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     'articles',
     'authentication',
+    'categories',
 ]
 
 MIDDLEWARE = [

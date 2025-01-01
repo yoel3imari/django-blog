@@ -30,9 +30,12 @@ def article_list(request):
 
     elif request.method == 'POST':
         try:
-            print("request.data:", request.data)
             serializer = ArticleSerializer(data=request.data)
             if serializer.is_valid():
+                # get category
+                category = request.data.get('category')
+                category.visit_count += 1
+                category.save()
                 serializer.save(author=request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({"error": serializer.errors, "request": request.data}, status=status.HTTP_400_BAD_REQUEST)
@@ -79,3 +82,11 @@ def article_detail(request, slug):
             )
         article.delete()
         return Response(status=status.HTTP_200_OK)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def latest_articles(request):
+    articles = Article.objects.filter(is_published=True).order_by('-published_at')[:4]
+    serializer = ArticleSerializer(articles, many=True)
+    return Response(serializer.data)

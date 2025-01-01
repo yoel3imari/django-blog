@@ -3,6 +3,7 @@ from .models import Article
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Article
         fields = [
@@ -13,8 +14,11 @@ class ArticleSerializer(serializers.ModelSerializer):
             "is_published",
             "published_at",
             "tags",
+            "cover",
+            "category",
             "author",
             "created_at",
             "updated_at",
         ]
         read_only_fields = ["id", "slug", "author", "created_at", "updated_at"]
+        depth = 1
