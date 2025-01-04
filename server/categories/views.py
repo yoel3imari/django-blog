@@ -50,6 +50,6 @@ def category_detail(request, name):
 @api_view(['GET'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def popular_categories(request):
-    categories = Category.objects.order_by('-visit_count')[:9]  # Adjust the number as needed
+    categories = Category.objects.order_by('-visit_count')[:4]  # Adjust the number as needed
     serializer = CategorySerializer(categories, many=True)
     return Response(serializer.data)
