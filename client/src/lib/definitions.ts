@@ -11,12 +11,12 @@ export interface BlogPost {
 }
 
 export interface Category {
-  id: number
-  name: string
-  slug: string
-  visit_count: number
-  created_at: string
-  updated_at: string
+  id: number;
+  name: string;
+  slug: string;
+  visit_count: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Author {
@@ -34,3 +34,6 @@ export interface Author {
   groups: any[];
   user_permissions: any[];
 }
+
+
+

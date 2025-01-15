@@ -26,7 +26,7 @@ export default function RootLayout({
         className={`${playfairDisplay.className} antialiased bg-background text-foreground`}
       >
         <div className=" flex items-center justify-center flex-col p-2 md:pd-4">
-          <div className="bg-background max-w-[720px]">{children}</div>
+          <div className="max-w-[720px]">{children}</div>
         </div>
       </body>
     </html>

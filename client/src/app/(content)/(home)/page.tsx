@@ -1,9 +1,9 @@
 import BlogCard from "@/components/BlogCard";
 import CategoryTag from "@/components/CategoryTag";
+import TheTitle from "@/components/TheTitle";
 import { get } from "@/lib/api";
 import { Category } from "@/lib/definitions";
 import Link from "next/link";
-import { post } from "../../../lib/api";
 
 export default async function Home() {
   const posts = await get<any[]>("latest-articles");
@@ -11,10 +11,13 @@ export default async function Home() {
 
   return (
     <div className="container mx-auto">
-      <div className="mt-4 mb-20">
-        <h1 className="text-6xl font-bold text-primary text-center">
-          Bloggers
-        </h1>
+      <div className="mt-4 mb-20 flex items-center justify-between">
+        <div></div>
+        <TheTitle />
+        <div className="flex gap-2 font-sans text-secondary-foreground text-sm">
+          <Link href="/connect" className="hover:underline">Connect</Link>
+          <Link href="/register" className="hover:underline">Register</Link>
+        </div>
       </div>
       <div className="mt-4 mb-12">
         <ul className="flex items-center gap-1 justify-center">
